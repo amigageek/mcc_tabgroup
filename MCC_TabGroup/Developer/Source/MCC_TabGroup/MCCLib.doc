@@ -1,0 +1,409 @@
+
+                      Table of Contents
+
+  Copyright                   - Copyright information
+  Distribution                - Copying conditions
+  Disclaimer                  - Legal Information
+  Trademark                   - Trademark information
+  Support/Updates             - How to get updates and support
+  Author                      - How to reach the author
+
+  Description                 - What is MCCLib?
+  Requirements                - Requirements for using MCCLib
+
+  Installation                - How to install MCCLib
+
+  History                     - Revision history of MCCLib
+  Todo                        - Todo list
+  Known problems              - List of known problems
+  Acknowledgments             - Acknowledgments
+  Please rate                 - Please rate MCCLib
+  MCCs                        - MCCs that use MCCLib
+
+
+
+Copyright
+---------
+
+This software and its documentation are copyright 1996-1997,1999 by
+Dipl.-Inform. Kai Hofmann. All rights reserved!
+
+- Permission for COMMERCIAL USE is only given by an extra available commercial
+  license that must be validated!
+  Contact me directly for this license, because it will be individually handed
+  out per your needs!
+
+- Permission is hereby granted, without written agreement and without license,
+  to USE this software and its documentation for any NON-COMMERCIAL purpose,
+  provided that the above copyright notice and the following paragraph appear
+  in all copies of this software (Non-commercial includes Giftware!).
+
+  Please send me a full version of your product at no cost including free
+  updates!
+
+
+
+Distribution
+------------
+
+Permission is hereby granted, without written agreement and without license or
+royalty fees, to copy and distribute this software and its documentation for
+any purpose, provided that the above copyright notice and the following
+paragraphs appear in all copies of this software, to:
+
+- All who will distribute this software for free!
+- All free accessible INTERNET servers!
+- All Aminet® sites
+- Fred Fish for his great Amiga-Software-Library
+- The German SAAR AG PD-Library
+- Angela Schmidt's Meeting Pearls serie
+- All others who do NOT take more than US$ 5.- for one disk that includes this
+  software!
+
+
+
+
+DISCLAIMER
+----------
+
+THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE
+LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDER AND/OR OTHER
+PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE
+QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE
+DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY
+COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY REDISTRIBUTE THE PROGRAM AS
+PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL,
+INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED
+INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE
+PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY
+HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+THE AUTHOR HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+Trademark
+---------
+
+Amiga, AmigaDOS, AmigaGuide and Workbench are registered trademarks of Amiga
+International, Inc.
+Aminet is a registered trademark of Stefan Ossowskis Schatztruhe GmbH
+SAS/C is a registered trademark of SAS Institute Inc.
+
+All other trademarked names used herein are used for the purposes of
+identification and for the benefit of the trademark holder. No infringement of
+trademarks is intended. Trademarks remain the property of the trademark holder.
+
+
+
+Support/Updates
+---------------
+
+- Updates will be available via Aminet®
+- Support will be available via the authors email address and via
+  http://www.hofmann-int.de/products/amiga/mui/MCCLib.shtml
+
+
+
+Author
+------
+
+Dipl.-Inform. Kai Hofmann
+Arberger Heerstraße 92
+28307 Bremen
+Germany
+
+Phone: (+49)-(0)421/480780
+EMail: hofmann@hofmann-int.de
+IRC  : PowerStat@#AmigaGer
+WWW  : http://www.hofmann-int.de/
+
+
+
+Description
+-----------
+
+MCCLib serves as a basis for writing public MUI Custom Classes including
+preference classes. It is a competitor to "mccheader.c" giving a custom
+class developer the basic library initialization code.
+
+MCCLib features:
+
+- Supports 68000-68060 including FPUs
+- Automatically generates version-string including copyright and CPU
+  information
+- Supports preference classes including preference images
+- Easier to use than mccheader.c
+- Well formatted/readable source code
+- Works with SAS/C® and GCC 2.7.2.1
+- Is prepared for working with StormC, Maxon C++, DICE C 3.x, VBCC, Aztec C
+  and Lattice C
+
+
+To compile a MCC/MCP with SAS/C® use the following compiler options as an
+example:
+sc opt strict ansi commentnest noicons nolink math=standard nostackcheck \
+   nostkext strmer memsize=huge def=__MakeLib objname=MyClass_mcc.o \
+   MyClass_mcc.c
+slink MyClass_mcc.o to MyClass.mcc noicons sc sd lib lib:amiga.lib lib:sc.lib
+
+
+GCC developers, please be careful - it is not possible to compile with
+"-fbaserel" (a4 relative compiling)!
+A4 relative compiling fails since there are too many registers used in
+UserLipOpen/MUI_CreateCustomClass.
+To create a Style Guide conform versionstring date, please define __AMIGADATE__
+with the following tool which can be found on Aminet CD5 or SET1a:
+Aminet:dev/c/AmigaDate.lha
+
+To compile a MCC/MCP with GCC use the following compiler options as an example:
+gcc -noixemul -nostdlib -nostartfiles -IMUI:Developer/C/include -s -O2 \
+    -msmall-code -o MyClass.mcc MyClass_mcc.c -lnix -lgcc -lamiga
+
+
+
+Requirements
+------------
+
+- MUI 3.1 Developer
+- SAS/C® or GCC 2.7.2.1
+
+
+
+Installation
+------------
+
+Copy the Developer/C/Examples/MCCLib.c file to wherever you want - it is
+recommended to copy it into your include path.
+
+
+
+History
+-------
+
+21.04.1997 -    First release on Aminet
+		* Separate release archive
+		* Added documentation
+20.07.1997 -	Second release on Aminet
+		* Added @{AMIGAGUIDE} V40 features to the documentation
+		* Added "please rate" section to the documentation
+		* Added MagicWB readme
+		* Now works with GCC 2.7.2.1, thanks to Alexander Leidinger
+		* Prepared for StormC, Maxon C++, DICE C 3.x, VBCC, Aztec C and
+		  Lattice C
+28.09.1997 -	Third release on Aminet
+		* Bug fixes
+04.10.1997 -	Fourth release on Aminet
+		* Bug fix
+29.01.1998 -	Fifth release on Aminet
+		* Removed over-optimization for mcp's
+01.12.1999 -	Sixth release on Aminet
+		* New EMail- and WWW-address
+
+
+
+Todo
+----
+
+- Installer script
+- Support INFOCLASS (?)
+- Support combined mcc+mcp
+
+
+
+Known problems
+--------------
+
+- None
+
+
+
+Acknowledgments are going to the following people:
+
+Rita Reichl         : for correcting my English and being my inspiration
+
+James Cooper,
+Steve Krueger,
+Doug Walker         : For supporting SAS/C® after SAS suspends the support.
+
+Stefan Stuntz       : for the Magic User Interface and for his support
+Klaus Melchior      : for the MUI custom class support
+Martin Huttenloher  : for MagicWB
+Udo Schuermann      : for WrapGuide
+Stefan Kost         : for ag2txt
+Jürgen Kohrmeyer    : for the rexxtricks.library
+
+Eric Gerard         : for his great icons
+Alexander Leidinger : for the GCC adaption
+
+
+
+Please rate
+-----------
+
+Please rate MCCLib. To do so, send an email to
+aminet-server@wuarchive.wustl.edu with the following content:
+
+RATE dev/mui/MCCLib.lha <num>
+
+where <num> is a mark from 0..10 with 10 being the best.
+You can rate several programs in one mail.
+
+Thank you!
+
+
+
+MCCs
+----
+
+The following MUI custom classes use MCCLib:
+
+Date            : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_Date.lha
+                  http://www.hofmann-int.de/products/amiga/mui/Date.shtml
+
+DateString      : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_DateString.lha
+                  http://www.hofmann-int.de/products/amiga/mui/DateString.shtml
+
+DateText        : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_DateText.lha
+                  http://www.hofmann-int.de/products/amiga/mui/DateText.shtml
+
+Mailtext        : By Olaf Peters <olf@informatik.uni-bremen.de>
+                  Aminet:dev/mui/MCC_Mailtext.lha
+                  http://home.pages.de/~Mailtext/
+
+MonthNavigator  : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_MonthNavi.lha
+                  http://www.hofmann-int.de/products/MonthNavigator/
+
+Time            : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_Time.lha
+                  http://www.hofmann-int.de/products/amiga/mui/Time.shtml
+
+TimeString      : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_TimeString.lha
+                  http://www.hofmann-int.de/products/amiga/mui/TimeString.shtml
+
+TimeText        : By Dipl.-Inform. Kai Hofmann <hofmann@hofmann-int.de>
+                  Aminet:dev/mui/MCC_TimeText.lha
+                  http://www.hofmann-int.de/products/amiga/mui/TimeText.shtml
+
+
+
+                      This is a custom class of the
+
+
+                        MUI - MagicUserInterface
+
+                   Copyright © 1993-1997 by Stefan Stuntz
+
+
+MUI is a system to generate and maintain graphical user interfaces. With
+the  aid  of  a  preferences program, the user of an application has the
+ability to customize the outfit according to his personal taste.
+
+MUI is distributed as shareware. To obtain a complete package containing
+lots of examples and more information about registration please look for
+a  file  called  "muiXXusr.lha"  (XX means the latest version number) on
+your local bulletin boards or on public domain disks.
+
+          If you want to register directly, feel free to send
+
+
+                         DM 30.-  or  US$ 20.-
+
+                                  to
+
+                             Stefan Stuntz
+                        Eduard-Spranger-Straße 7
+                             80935 München
+                                GERMANY
+
+
+             Support and online registration are available at
+
+                          http://www.sasg.com/
+
+
+
+                 This product is based on or uses parts of
+
+                     MagicWB - The Workbench Enhancer
+                     --------------------------------
+
+                 Copyright © 1992-1997, Martin Huttenloher
+
+
+If  you  use  and like this product you should very much consider to take a
+look  at  MagicWB,  which  is the authentic source of the style, colors and
+design  elements  contained  in  this  package.   It  features  hundreds of
+original  icons,  patterns, image-drawers,  dock-brushes and some specially
+designed  high-quality  fonts  to  improve the comfort & legibility of your
+daily Workbench session.
+
+What  is  MagicWB?   MagicWB  is  a full replacement for the Graphical User
+Interface  of the Workbench and has become the standard visual interface on
+the  Amiga.  Over the last years MagicWB has received various merits and an
+overwhelming  response from Amiga magazines and users worldwide proclaiming
+it  "a  must  for  all  Amiga  users".   Even  commercial  applications are
+supporting the multi-colored look & style of MagicWB.
+
+Get yourself the latest version of MagicWB and see for yourself the wonders
+it  can  do by automatically transforming your old and dull Amiga Workbench
+into  an impressive workstation environment that will be the envy of all PC
+Windows  and  Mac users.  Update yourself to the state-of-the-art workbench
+standard  everyone uses on the Amiga!  It is also your key to enjoy the new
+look & feel of many applications and other MWB add-ons and extensions.
+
+MagicWB  is  distributed as shareware.  Get yourself the latest FREE PUBLIC
+RELEASE of MagicWB now:  It is called
+
+                             ----------------
+                              MagicWB21p.lha
+                             ----------------
+
+and  can  be found everywhere on Aminet (or your local BBS or public domain
+series).   Install it and witness the instant magic it performs on your old
+Amiga  Workbench.   Also  included  is the latest SASG registration program
+with which you can order and get the full registered version of MagicWB.
+
+
+             If you want to order directly, feel free to send
+
+
+                  DM 30.- or US$ 20.- (cash, no checks!)
+
+                                    to
+
+                            Martin Huttenloher
+                             Am Hochstraess 4
+                               D-89081 Ulm
+                                 Germany
+
+
+You  may  also  choose  to visit the official MagicWB homepage on the world
+wide  web.   There you can find the latest news & support and even register
+your  MagicWB  online  (which is much more comfortable and faster). You can
+even  benefit  from  various  special offers & discounts for MagicWB if you
+order through our website!  Come and visit MagicWB at:
+
+                          ----------------------
+                           http://www.sasg.com/
+                          ----------------------
+
+              Save 20% by using the discounts on our website!
+
+           Ordering online also saves you a lot of time and work!
+
+
+
+WrapGuide is Copyright 1994-1995 Udo Schuermann
+All rights reserved
