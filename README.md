@@ -11,9 +11,11 @@ Key features:
 - Mimics the look and feel of the Register class
 - User preferences for tab size, padding, font, and background
 
-## Screenshot
+## Screenshots
 
-![](Screenshot.png)
+<img src="Screenshot.png" width="512">
+
+<img src="Screenshot2.png" width="706">
 
 ## Installation
 
