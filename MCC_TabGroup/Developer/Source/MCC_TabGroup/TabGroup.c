@@ -16,6 +16,10 @@
 #define CLASS MUIC_TabGroup
 #define SUPERCLASS MUIC_Group
 
+#ifndef MUIA_Group_Forward
+#define MUIA_Group_Forward 0x80421422
+#endif
+
 typedef struct Data {
     struct MUI_EventHandlerNode event_handler_node;
     Object* instance;
@@ -276,7 +280,7 @@ static ULONG tab_group_setup(__reg("a0") struct IClass* cl, __reg("a2") Object* 
     ULONG background_spec = MUII_RegisterBack;
     DoMethod(obj, MUIM_GetConfigItem, MUICFG_TabGroup_Background, &background_spec);
 
-    set(data->page_group, MUIA_Background, background_spec);
+    SetAttrs(data->page_group, MUIA_Group_Forward, FALSE, MUIA_Background, background_spec, TAG_DONE);
 
     DoMethod(_win(obj), MUIM_Window_AddEventHandler, &data->event_handler_node);
 
