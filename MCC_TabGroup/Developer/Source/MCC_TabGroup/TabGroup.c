@@ -54,7 +54,7 @@ static Object* tab_group_add(__reg("a0") struct IClass* cl, __reg("a2") Object* 
 static ULONG tab_group_remove(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") struct MUIP_TabGroup_RemoveTab* msg);
 static ULONG tab_group_swap(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") struct MUIP_TabGroup_SwapTabs* msg);
 static LONG tabs_layout(__reg("a0") struct Hook* hook, __reg("a2") Object* obj, __reg("a1") struct MUI_LayoutMsg* msg);
-static void set_active_tab(TabGroupData* data, Object* tab_or_special);
+static Object* set_active_tab(TabGroupData* data, Object* tab_or_special);
 static Object* resolve_special_tab_value(TabGroupData* data, Object* tab_or_special);
 static ULONG calculate_tab_index(TabGroupData* data, LONG index_or_special, BOOL allow_end);
 static void reindex_tabs(TabGroupData* data);
@@ -268,7 +268,7 @@ static ULONG tab_group_set(__reg("a0") struct IClass* cl, __reg("a2") Object* ob
     struct TagItem* active_tab_tagitem;
 
     if (active_tab_tagitem = FindTagItem(MUIA_TabGroup_ActiveTab, msg->ops_AttrList)) {
-        set_active_tab(data, (Object*)active_tab_tagitem->ti_Data);
+        active_tab_tagitem->ti_Data = (ULONG)set_active_tab(data, (Object*)active_tab_tagitem->ti_Data);
     }
 
     return DoSuperMethodA(cl, obj, (Msg)msg);
@@ -641,10 +641,10 @@ static LONG tabs_layout(__reg("a0") struct Hook* hook, __reg("a2") Object* obj, 
     return MUILM_UNKNOWN;
 }
 
-static void set_active_tab(TabGroupData* data, Object* tab_or_special) {
+static Object* set_active_tab(TabGroupData* data, Object* tab_or_special) {
     // Not expected but prevent the user from doing this
     if (data->num_tabs == 0) {
-        return;
+        return tab_or_special;
     }
 
     Object* new_active_tab = resolve_special_tab_value(data, tab_or_special);
@@ -664,6 +664,8 @@ static void set_active_tab(TabGroupData* data, Object* tab_or_special) {
             set(data->page_group, MUIA_Group_ActivePage, data->active_tab_index);
         }
     }
+
+    return new_active_tab;
 }
 
 static Object* resolve_special_tab_value(TabGroupData* data, Object* tab_or_special) {

@@ -15,11 +15,6 @@
 *	The Tab class is private but exposes the attributes listed
 *	in the SEE ALSO section below.
 *
-*	Take care when using MUIV_TriggerValue with this attribute
-*	since a special input will not be translated into an Object *.
-*	Instead query the attribute again in your notify handler to
-*	retrieve the Object pointer.
-*
 *   SEE ALSO
 *	MUIA_TabGroup_Tab_Active, MUIA_TabGroup_Tab_Index,
 *	MUIA_TabGroup_Tab_Page, MUIA_TabGroup_Tab_TabGroup,
