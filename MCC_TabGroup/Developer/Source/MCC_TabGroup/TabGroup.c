@@ -269,6 +269,15 @@ static ULONG tab_group_set(__reg("a0") struct IClass* cl, __reg("a2") Object* ob
 
     if (active_tab_tagitem = FindTagItem(MUIA_TabGroup_ActiveTab, msg->ops_AttrList)) {
         active_tab_tagitem->ti_Data = (ULONG)set_active_tab(data, (Object*)active_tab_tagitem->ti_Data);
+
+        // Do not forward to Group superclass else it will propagate to
+        // its children, potentially including other TabGroup instances.
+        struct TagItem no_forward_set[] = {
+            {.ti_Tag = MUIA_Group_Forward, .ti_Data = FALSE },
+            {.ti_Tag = TAG_MORE, .ti_Data = (ULONG)msg->ops_AttrList}
+        };
+
+        return DoSuperMethod(cl, obj, OM_SET, &no_forward_set, msg->ops_GInfo);
     }
 
     return DoSuperMethodA(cl, obj, (Msg)msg);
@@ -298,6 +307,12 @@ static ULONG tab_group_cleanup(__reg("a0") struct IClass* cl, __reg("a2") Object
 
 static ULONG tab_group_notify(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") struct MUIP_Notify* msg) {
     TabGroupData* data = INST_DATA(cl, obj);
+
+    if (msg->TrigAttr == MUIA_TabGroup_ActiveTab) {
+        // Do not forward to Group superclass else it will propagate to
+        // its children, potentially including other TabGroup instances.
+        return DoSuperMethodA(cl->cl_Super, obj, (Msg)msg);
+    }
 
     if (TagInArray(msg->TrigAttr, page_group_tags)) {
         return DoMethodA(data->page_group, (Msg)msg);
