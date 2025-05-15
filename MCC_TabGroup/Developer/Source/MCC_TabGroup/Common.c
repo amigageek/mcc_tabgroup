@@ -2,6 +2,7 @@
 
 #include <proto/alib.h>
 #include <proto/intuition.h>
+#include <proto/muimaster.h>
 
 void insert_member(Object* parent, struct List* member_list, Object* new_member, UWORD insert_index) {
     struct List move_list;
@@ -37,4 +38,17 @@ Object* nth_object(struct List* list, UWORD object_index) {
 
 ULONG DoSuperNew(struct IClass* cl, Object* obj, ULONG tag1, ...) {
     return DoSuperMethod(cl, obj, OM_NEW, &tag1, NULL);
+}
+
+void draw_background(Object* instance, LONG left, LONG top, LONG width, LONG height) {
+    LONG xoffset = 0;
+    LONG yoffset = 0;
+
+    if (MUIMasterBase->lib_Version == 19) {
+        // MUI 3.8 misinterprets the offset fields, fixed in 3.9+.
+        xoffset = left;
+        yoffset = top;
+    }
+
+    DoMethod(instance, MUIM_DrawBackground, left, top, width, height, xoffset, yoffset, 0);
 }

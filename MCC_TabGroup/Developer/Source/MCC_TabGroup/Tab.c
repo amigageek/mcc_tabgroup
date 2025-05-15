@@ -249,6 +249,10 @@ static ULONG tab_draw(__reg("a0") struct IClass *cl, __reg("a2") Object *obj, __
         return TRUE;
     }
 
+    // MUI 3.9+ asks us to draw to a different RastPort when being dragged.
+    // Prefer not to draw the background when dragged but 3.8 has no way to detect.
+    BOOL draw_parent_bg = _rp(obj) == _rp(data->parent_group);
+
     // When tab is active: inset by 1 pixel left/right, 2 pixels down
     BOOL active = data->active;
     UWORD inset = (active ? 0 : 1);
@@ -258,26 +262,31 @@ static ULONG tab_draw(__reg("a0") struct IClass *cl, __reg("a2") Object *obj, __
     UWORD bottom = _mbottom(obj);
 
     // Fill tab with background color (overdraws by 2 pixels)
-    DoMethod(obj, MUIM_DrawBackground, left + 1, top + 1, right - left - 1, bottom - top, left + 1, top + 1, 0);
+    draw_background(obj, left + 1, top + 1, right - left - 1, bottom - top);
 
     // Restore parent background along tab diagonal left/right edges
     for (UWORD row = 0; row < 3; ++ row) {
         UWORD y = top + row;
         UWORD left_width = 4 - row + inset; // {4,3,2} + inset
-        DoMethod(data->parent_group, MUIM_DrawBackground, _mleft(obj), y, left_width, 1, _mleft(obj), y, 0);
 
         UWORD right_width = left_width + (row == 0 ? 1 : 0); // {5,3,2} + inset
         UWORD right_x = right - (3 - row + (row == 0 ? 1 : 0)); // right - {4,2,1}
-        DoMethod(data->parent_group, MUIM_DrawBackground, right_x, y, right_width, 1, right_x, y, 0);
+
+        if (draw_parent_bg) {
+            draw_background(data->parent_group, _mleft(obj), y, left_width, 1);
+            draw_background(data->parent_group, right_x, y, right_width, 1);
+        }
     }
 
     // Restore parent background to left/right of tab
-    DoMethod(data->parent_group, MUIM_DrawBackground, _mleft(obj), top + 3, 1 + inset, bottom - top - 3 + inset, _mleft(obj), top + 3, 0);
-    DoMethod(data->parent_group, MUIM_DrawBackground, right - 0,   top + 3, 1 + inset, bottom - top - 3 + inset, right - 0,   top + 3, 0);
+    if (draw_parent_bg) {
+        draw_background(data->parent_group, _mleft(obj), top + 3, 1 + inset, bottom - top - 3 + inset);
+        draw_background(data->parent_group, right - 0,   top + 3, 1 + inset, bottom - top - 3 + inset);
 
-    if (! active) {
-        // Restore parent background above tab
-        DoMethod(data->parent_group, MUIM_DrawBackground, _mleft(obj), _mtop(obj), _mwidth(obj), 2, _mleft(obj), _mtop(obj), 0);
+        if (! active) {
+            // Restore parent background above tab
+            draw_background(data->parent_group, _mleft(obj), _mtop(obj), _mwidth(obj), 2);
+        }
     }
 
     struct RastPort* rp = _rp(obj);

@@ -280,7 +280,7 @@
  /****************************************************************************/
 
  const char ALIGNED _LibName[] = CLASS;
- const char ALIGNED _LibID[] = "$VER: " CLASS " " VERSIONSTR " " __AMIGADATE__ " �" COPYRIGHT " " AUTHOR ", "
+ const char ALIGNED _LibID[] = "$VER: " CLASS " " VERSIONSTR " " __AMIGADATE__ " \xa9 " COPYRIGHT " " AUTHOR ", "
 			       #if defined(_M68060) || defined(__mc68060) || defined(mc68060)
 				 "68060"
 			       #elif defined(_M68040) || defined(__mc68040) || defined(mc68040)

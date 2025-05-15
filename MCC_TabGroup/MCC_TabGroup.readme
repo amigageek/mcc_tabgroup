@@ -2,7 +2,7 @@ Short:        Dynamic tab group custom class for MUI
 Author:       djay@amigageek.com
 Uploader:     djay@amigageek.com
 Type:         dev/mui
-Version:      19.0
+Version:      19.1
 Requires:     MUI 3.8+
 Architecture: m68k-amigaos >= 2.0
 
@@ -37,3 +37,12 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Changes:
+
+19.1
+----
+
+- Fix rendering artifacts with MUI 3.9+
+- Fix bad character in copyright message
+- Add locale support to preferences program

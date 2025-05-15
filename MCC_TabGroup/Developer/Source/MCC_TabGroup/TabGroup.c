@@ -394,8 +394,7 @@ static ULONG tab_group_draw(__reg("a0") struct IClass* cl, __reg("a2") Object* o
     // Erase top frame edge below active tab
     UWORD active_tab_width = active_tab_right - active_tab_left + 1;
 
-    DoMethod(data->page_group, MUIM_DrawBackground, active_tab_left, frame_top,
-        active_tab_width, TAB_GROUP_FRAME_SIZE, active_tab_left, frame_top, 0);
+    draw_background(data->page_group, active_tab_left, frame_top, active_tab_width, TAB_GROUP_FRAME_SIZE);
 
     // Draw left frame edge
     SetAPen(rp, pens[MPEN_SHINE]);

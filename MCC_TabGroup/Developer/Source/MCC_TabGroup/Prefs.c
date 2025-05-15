@@ -1,6 +1,9 @@
 #include "MUI/TabGroup_mcc.h"
 #include "Common.h"
 
+#define CATCOMP_NUMBERS 1
+#include "Locale.h"
+
 #include <libraries/asl.h>
 #include <libraries/mui.h>
 #include <proto/alib.h>
@@ -48,11 +51,40 @@ static ULONG prefs_new(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, _
 static ULONG prefs_config_to_gadgets(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") struct MUIP_Settingsgroup_ConfigToGadgets* msg);
 static ULONG prefs_gadgets_to_config(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") struct MUIP_Settingsgroup_GadgetsToConfig* msg);
 
+static STRPTR info_text;
+
 static BOOL ClassInitFunc(const struct Library* const base) {
+    Locale_Open("TabGroup_mcp.catalog", 1, 0);
+
+    const char* info_text_parts[] = {
+        MUIX_C MUIX_B MUIC_TabGroupP MUIX_N " " VERSIONSTR " " __AMIGADATE__ "\n",
+        GetString(MSG_Copyright),
+        " " COPYRIGHT " " AUTHOR "\n",
+        GetString(MSG_Distribution)
+    };
+
+    ULONG num_parts = sizeof(info_text_parts) / sizeof(info_text_parts[0]);
+    ULONG info_text_size = 1;
+
+    for (ULONG i = 0; i < num_parts; ++ i) {
+        info_text_size += strlen(info_text_parts[i]);
+    }
+
+    if (! (info_text = AllocVec(info_text_size, MEMF_CLEAR))) {
+        return FALSE;
+    }
+
+    for (ULONG i = 0; i < num_parts; ++ i) {
+        strcat(info_text, info_text_parts[i]);
+    }
+
     return TRUE;
 }
 
 static void ClassExitFunc(const struct Library* const base) {
+    FreeVec(info_text);
+
+    Locale_Close();
 }
 
 static ULONG Dispatcher(__reg("a0") struct IClass* cl, __reg("a2") Object* obj, __reg("a1") Msg msg) {
@@ -77,47 +109,47 @@ static ULONG prefs_new(__reg("a0") struct IClass* cl, __reg("a2") Object* truecl
 
     Object* group = VGroup,
         Child, VGroup,
-            GroupFrameT("Sample"),
+            GroupFrameT(GetString(MSG_Sample)),
             Child, tab_group = TabGroupObject,
                 MUIA_TabGroup_DraggableTabs, TRUE,
                 MUIA_CycleChain, 1,
             End,
         End,
         Child, VGroup,
-            GroupFrameT("Tab Settings"),
+            GroupFrameT(GetString(MSG_Tab_Settings)),
             MUIA_Group_Columns, 2,
-            Child, FreeLabel("Background:"),
+            Child, FreeLabel(GetString(MSG_Background)),
             Child, data->background_image = PopimageObject,
                 MUIA_CycleChain, 1,
                 MUIA_Draggable, TRUE,
                 MUIA_Imageadjust_Type, MUIV_Imageadjust_Type_Background,
-                MUIA_Window_Title, "Background Color",
-                MUIA_ShortHelp, "Background for pages and selected tab",
+                MUIA_Window_Title, GetString(MSG_Background_Color),
+                MUIA_ShortHelp, GetString(MSG_Background_Help),
             End,
-            Child, Label("Font:"),
+            Child, Label(GetString(MSG_Font)),
             Child, data->font_string = PopaslObject,
                 MUIA_CycleChain, 1,
                 MUIA_Popstring_String, String(NULL, MAX_FONT_SPEC_SIZE),
                 MUIA_Popstring_Button, PopButton(MUII_PopUp),
                 MUIA_Popasl_Type, ASL_FontRequest,
-                MUIA_ShortHelp, "Font used in tab titles",
-                ASLFO_TitleText, "Select Font",
+                MUIA_ShortHelp, GetString(MSG_Font_Help),
+                ASLFO_TitleText, GetString(MSG_Select_Font),
             End,
-            Child, Label("Horizontal Padding:"),
+            Child, Label(GetString(MSG_Horizontal_Padding)),
             Child, data->horiz_pad_slider = SliderObject,
                 MUIA_CycleChain, 1,
                 MUIA_Slider_Min, 0,
                 MUIA_Slider_Max, 10,
-                MUIA_ShortHelp, "Space to left and right of tab title",
+                MUIA_ShortHelp, GetString(MSG_Horizontal_Padding_Help),
             End,
-            Child, Label("Vertical Padding:"),
+            Child, Label(GetString(MSG_Vertical_Padding)),
             Child, data->vert_pad_slider = SliderObject,
                 MUIA_CycleChain, 1,
                 MUIA_Slider_Min, 0,
                 MUIA_Slider_Max, 10,
-                MUIA_ShortHelp, "Space above and below tab title",
+                MUIA_ShortHelp, GetString(MSG_Vertical_Padding_Help),
             End,
-            Child, Label("Compact:"),
+            Child, Label(GetString(MSG_Compact)),
             Child, HGroup,
                 MUIA_Group_Spacing, 0,
                 Child, data->compact_checkmark = CheckMark(FALSE),
@@ -128,10 +160,7 @@ static ULONG prefs_new(__reg("a0") struct IClass* cl, __reg("a2") Object* truecl
             TextFrame,
             MUIA_Background, MUII_TextBack,
             MUIA_FixHeightTxt, "\n",
-            MUIA_Text_Contents,
-                MUIX_C MUIX_B MUIC_TabGroupP MUIX_N " " VERSIONSTR " " __AMIGADATE__ "\n"
-                "Copyright " COPYRIGHT " " AUTHOR "\n"
-                "Distributed under the MIT-0 license",
+            MUIA_Text_Contents, info_text,
         End,
     End;
 
@@ -140,15 +169,15 @@ static ULONG prefs_new(__reg("a0") struct IClass* cl, __reg("a2") Object* truecl
         return 0;
     }
 
-    set(data->compact_checkmark, MUIA_ShortHelp, "Tabs expand no wider than necessary");
+    set(data->compact_checkmark, MUIA_ShortHelp, GetString(MSG_Compact_Help));
 
     for (ULONG page_idx = 1; page_idx <= 3; ++ page_idx) {
         UBYTE page_name[20];
         UBYTE page_text[20];
 
         static UWORD put_char[] = {0x16C0, 0x4e75}; // move.b d0,(a3)+ ; rts
-        RawDoFmt("Page %lu", &page_idx, (void (*)())put_char, page_name);
-        RawDoFmt("This is page %lu", &page_idx, (void (*)())put_char, page_text);
+        RawDoFmt(GetString(MSG_Page), &page_idx, (void (*)())put_char, page_name);
+        RawDoFmt(GetString(MSG_Page_Body), &page_idx, (void (*)())put_char, page_text);
 
         DoMethod(tab_group, MUIM_TabGroup_AddTab, MUIV_TabGroup_Tab_Last, page_name, 0, TRUE,
             VCenter(HCenter(MUI_NewObject(MUIC_Text, MUIA_Text_Contents, page_text, TAG_DONE))), TAG_DONE);

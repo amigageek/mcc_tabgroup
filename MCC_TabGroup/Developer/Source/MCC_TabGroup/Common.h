@@ -3,9 +3,9 @@
 #define SWAP(T, A, B) { T temp = A; A = B; B = temp; }
 
 #define VERSION 19
-#define REVISION 0
-#define VERSIONSTR "19.0"
-#define COPYRIGHT "2024"
+#define REVISION 1
+#define VERSIONSTR "19.1"
+#define COPYRIGHT "2025"
 #define AUTHOR "djay@amigageek.com"
 
 #define MAX_FONT_SPEC_SIZE 64
@@ -26,3 +26,4 @@ struct MUI_CustomClass* tab_make_class(void);
 void insert_member(Object* parent, struct List* member_list, Object* new_member, UWORD insert_index);
 Object* nth_object(struct List* list, UWORD object_index);
 ULONG DoSuperNew(struct IClass* cl, Object* obj, ULONG tag1, ...);
+void draw_background(Object* instance, LONG left, LONG top, LONG width, LONG height);

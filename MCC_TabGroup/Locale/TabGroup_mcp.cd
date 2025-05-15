@@ -1,0 +1,56 @@
+# language english
+# version 0
+;
+MSG_Sample
+Sample
+;
+MSG_Tab_Settings
+Tab Settings
+;
+MSG_Background
+Background:
+;
+MSG_Background_Color
+Background Color
+;
+MSG_Background_Help
+Background for pages and selected tab
+;
+MSG_Font
+Font:
+;
+MSG_Font_Help
+Font used in tab titles
+;
+MSG_Select_Font
+Select Font
+;
+MSG_Horizontal_Padding
+Horizontal Padding:
+;
+MSG_Horizontal_Padding_Help
+Space to left and right of tab title
+;
+MSG_Vertical_Padding
+Vertical Padding:
+;
+MSG_Vertical_Padding_Help
+Space above and below tab title
+;
+MSG_Compact
+Compact:
+;
+MSG_Compact_Help
+Tabs expand no wider than necessary
+;
+MSG_Copyright
+Copyright
+;
+MSG_Distribution
+Distributed under the MIT-0 license
+;
+MSG_Page
+Page %lu
+;
+MSG_Page_Body
+This is page %lu

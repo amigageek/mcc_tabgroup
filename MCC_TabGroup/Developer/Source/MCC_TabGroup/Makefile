@@ -16,7 +16,7 @@ MCP		= ../../../Libs/MUI/TabGroup.mcp
 AUTODOC		= ../../Autodocs/MCC_TabGroup.doc
 PREFSIMAGE	= PrefsImage.h
 MCC_SRCS	= Common.c Tab.c TabGroup.c
-MCP_SRCS	= Prefs.c
+MCP_SRCS	= Locale.c Prefs.c
 PREFSIMAGE_SRCS	= PrefsImage.iff
 AUTODOC_SRCS	= Autodoc.h
 
