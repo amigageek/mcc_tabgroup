@@ -1,56 +1,56 @@
-# language english
-# version 0
+; $VER: TabGroup_mcp.cd 19.1 (15.05.2025)
+## language english
 ;
-MSG_Sample
+MSG_Sample (//)
 Sample
 ;
-MSG_Tab_Settings
+MSG_Tab_Settings (//)
 Tab Settings
 ;
-MSG_Background
+MSG_Background (//)
 Background:
 ;
-MSG_Background_Color
+MSG_Background_Color (//)
 Background Color
 ;
-MSG_Background_Help
+MSG_Background_Help (//)
 Background for pages and selected tab
 ;
-MSG_Font
+MSG_Font (//)
 Font:
 ;
-MSG_Font_Help
+MSG_Font_Help (//)
 Font used in tab titles
 ;
-MSG_Select_Font
+MSG_Select_Font (//)
 Select Font
 ;
-MSG_Horizontal_Padding
+MSG_Horizontal_Padding (//)
 Horizontal Padding:
 ;
-MSG_Horizontal_Padding_Help
+MSG_Horizontal_Padding_Help (//)
 Space to left and right of tab title
 ;
-MSG_Vertical_Padding
+MSG_Vertical_Padding (//)
 Vertical Padding:
 ;
-MSG_Vertical_Padding_Help
+MSG_Vertical_Padding_Help (//)
 Space above and below tab title
 ;
-MSG_Compact
+MSG_Compact (//)
 Compact:
 ;
-MSG_Compact_Help
+MSG_Compact_Help (//)
 Tabs expand no wider than necessary
 ;
-MSG_Copyright
+MSG_Copyright (//)
 Copyright
 ;
-MSG_Distribution
+MSG_Distribution (//)
 Distributed under the MIT-0 license
 ;
-MSG_Page
+MSG_Page (//)
 Page %lu
 ;
-MSG_Page_Body
+MSG_Page_Body (//)
 This is page %lu
